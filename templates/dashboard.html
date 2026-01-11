@@ -1,116 +1,241 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="dashboard-container">
-    <div class="nav-bar">
-        <div class="logo">
-            <i class="fa-solid fa-wallet"></i> Sivacash
+<div class="main-layout">
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <i class="fa-solid fa-hand-holding-dollar"></i> SIVACASH
         </div>
-        <div class="user-menu">
-            <span class="user-name">
-                <i class="fa-solid fa-user-circle"></i> {{ name }}
-                <span class="badge {{ role }}">{{ role|upper }}</span>
-            </span>
-            {% if role == 'admin' %}
-            <a href="{{ url_for('manage_users') }}" class="btn-logout"
-                style="margin-right: 10px; background: rgba(99, 102, 241, 0.2); color: var(--accent-primary); border-color: var(--accent-primary);">
-                <i class="fa-solid fa-users-gear"></i> Manage Users
-            </a>
-            {% endif %}
-            <a href="{{ url_for('logout') }}" class="btn-logout">
-                <i class="fa-solid fa-right-from-bracket"></i> Logout
-            </a>
+
+        <div class="user-profile-mini">
+            <div class="user-avatar">
+                {{ name[0]|upper }}
+            </div>
+            <div class="user-details">
+                <span class="u-name">{{ name }}</span>
+                <span class="u-role badge {{ role }}">{{ role|upper }}</span>
+            </div>
         </div>
+
+        <nav class="side-menu">
+            <a href="{{ url_for('dashboard') }}" class="menu-item active">
+                <i class="fa-solid fa-house"></i>
+                <span>முகப்பு (Dashboard)</span>
+            </a>
+
+            <a href="{{ url_for('view_page', page='collection') }}" class="menu-item">
+                <i class="fa-solid fa-indian-rupee-sign"></i>
+                <span>வசூல் (Collection)</span>
+            </a>
+
+            <a href="{{ url_for('view_page', page='monthly') }}" class="menu-item">
+                <i class="fa-solid fa-calendar-days"></i>
+                <span>மாதம்(வட்டி) (Monthly)</span>
+            </a>
+
+            <a href="{{ url_for('view_page', page='customers') }}" class="menu-item">
+                <i class="fa-solid fa-users"></i>
+                <span>வாடிக்கையாளர் (Customers)</span>
+            </a>
+
+            <a href="{{ url_for('view_page', page='expense') }}" class="menu-item">
+                <i class="fa-solid fa-money-bill-transfer"></i>
+                <span>பற்று (Debit/Expense)</span>
+            </a>
+
+            <a href="{{ url_for('view_page', page='investment') }}" class="menu-item">
+                <i class="fa-solid fa-piggy-bank"></i>
+                <span>முதலீடு (Investment)</span>
+            </a>
+
+            <div class="menu-group" onclick="this.classList.toggle('open')">
+                <div class="menu-item has-submenu">
+                    <div style="display:flex; align-items:center; gap:12px;">
+                        <i class="fa-solid fa-chart-pie"></i>
+                        <span>விபரம் (Reports)</span>
+                    </div>
+                    <i class="fa-solid fa-chevron-down arrow"></i>
+                </div>
+                <div class="submenu">
+                    <a href="{{ url_for('view_page', page='reports') }}">தினசரி (Daily)</a>
+                    <a href="{{ url_for('view_page', page='reports') }}">வாரம் (Weekly)</a>
+                    <a href="{{ url_for('view_page', page='reports') }}">மாதம் (Monthly)</a>
+                </div>
+            </div>
+
+            <a href="{{ url_for('view_page', page='others') }}" class="menu-item">
+                <i class="fa-solid fa-layer-group"></i>
+                <span>இதர (Others)</span>
+            </a>
+
+            <a href="{{ url_for('view_page', page='cashout') }}" class="menu-item">
+                <i class="fa-solid fa-money-bill-1-wave"></i>
+                <span>பணம் எடுப்பு (Cashout)</span>
+            </a>
+
+            <a href="{{ url_for('view_page', page='reminders') }}" class="menu-item">
+                <i class="fa-regular fa-bell"></i>
+                <span>நினைவூட்டல் (Reminders)</span>
+            </a>
+
+            <a href="{{ url_for('view_page', page='notes') }}" class="menu-item">
+                <i class="fa-regular fa-note-sticky"></i>
+                <span>நோட்ஸ் (Notes)</span>
+            </a>
+
+            <!-- Configuration (அமைவு) -->
+            <div class="menu-group" onclick="this.classList.toggle('open')">
+                <div class="menu-item has-submenu">
+                    <div style="display:flex; align-items:center; gap:12px;">
+                        <i class="fa-solid fa-gear"></i>
+                        <span>அமைவு (Settings)</span>
+                    </div>
+                    <i class="fa-solid fa-chevron-down arrow"></i>
+                </div>
+                <div class="submenu">
+                    <a href="{{ url_for('view_page', page='settings') }}">Settings</a>
+                </div>
+            </div>
+
+            <!-- Company (கம்பெனி) -->
+            <div class="menu-group" onclick="this.classList.toggle('open')">
+                <div class="menu-item has-submenu">
+                    <div style="display:flex; align-items:center; gap:12px;">
+                        <i class="fa-solid fa-building"></i>
+                        <span>கம்பெனி (Company)</span>
+                    </div>
+                    <i class="fa-solid fa-chevron-down arrow"></i>
+                </div>
+                <div class="submenu">
+                    <a href="{{ url_for('view_page', page='company') }}">Company</a>
+                </div>
+            </div>
+
+            <a href="{{ url_for('logout') }}" class="menu-item logout">
+                <i class="fa-solid fa-power-off"></i>
+                <span>வெளியேறு (Logout)</span>
+            </a>
+        </nav>
     </div>
 
-    <div class="stats-grid">
-        <div class="stat-card">
-            <div class="stat-icon">
-                <i class="fa-solid fa-coins"></i>
+    <!-- Main Content Area -->
+    <div class="main-content">
+        <header class="top-header">
+            <div class="header-left">
+                <h3>வணக்கம், {{ name }} 👋</h3>
             </div>
-            <div class="stat-info">
-                <h3>Total Collections</h3>
-                <p>₹{{ "{:,.2f}".format(total_amount) }}</p>
+            <div class="header-right">
+                <button class="icon-btn"><i class="fa-solid fa-bell"></i></button>
+                <div class="user-dropdown">
+                    <button class="icon-btn"><i class="fa-solid fa-gear"></i></button>
+                </div>
             </div>
-        </div>
-        <!-- Placeholder for more stats if needed -->
-        <div class="stat-card">
-            <div class="stat-icon" style="color: var(--success); background: rgba(16, 185, 129, 0.2);">
-                <i class="fa-solid fa-chart-line"></i>
-            </div>
-            <div class="stat-info">
-                <h3>Transactions</h3>
-                <p>{{ collections|length }}</p>
-            </div>
-        </div>
-    </div>
+        </header>
 
-    <div class="content-grid">
-        {% if role == 'agent' %}
-        <!-- Add Collection Form - Only for Agents -->
-        <div class="card">
-            <div class="card-header">
-                <h3>New Entry</h3>
-            </div>
-            <form action="{{ url_for('add_collection') }}" method="POST">
-                <div class="form-group">
-                    <label for="date">Date</label>
-                    <input type="date" id="date" name="date" required>
+        <div class="content-wrapper">
+            <!-- Stats Row -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fa-solid fa-coins"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>Total Collections</h3>
+                        <p>₹{{ "{:,.2f}".format(total_amount) }}</p>
+                    </div>
                 </div>
 
-                <div class="form-group">
-                    <label for="amount">Amount (₹)</label>
-                    <input type="number" step="0.01" id="amount" name="amount" required placeholder="0.00">
+                <div class="stat-card">
+                    <div class="stat-icon" style="color: var(--success); background: rgba(16, 185, 129, 0.2);">
+                        <i class="fa-solid fa-chart-line"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>Transactions</h3>
+                        <p>{{ collections|length }}</p>
+                    </div>
                 </div>
 
-                <div class="form-group">
-                    <label for="purpose">Purpose / Source</label>
-                    <input type="text" id="purpose" name="purpose" required placeholder="e.g. Daily Sales">
+                <div class="stat-card">
+                    <div class="stat-icon" style="color: #6366f1; background: #e0e7ff;">
+                        <i class="fa-solid fa-users"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>Active Customers</h3>
+                        <p>0</p>
+                    </div>
                 </div>
-
-                <button type="submit" class="btn-primary">
-                    <i class="fa-solid fa-plus"></i> Add Collection
-                </button>
-            </form>
-        </div>
-        {% endif %}
-
-        <!-- Recent Collections List -->
-        <div class="card">
-            <div class="card-header">
-                <h3>Recent History</h3>
             </div>
-            <div class="table-responsive">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Date</th>
-                            {% if role == 'admin' %}<th>Agent</th>{% endif %}
-                            <th>Purpose</th>
-                            <th>Amount</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% if collections %}
-                        {% for item in collections %}
-                        <tr>
-                            <td>{{ item['collection_date'] }}</td>
-                            {% if role == 'admin' %}
-                            <td><i class="fa-solid fa-user-tag"></i> {{ item['user_name'] }}</td>
-                            {% endif %}
-                            <td>{{ item['purpose'] }}</td>
-                            <td class="amount">+ ₹{{ "{:,.2f}".format(item['amount']) }}</td>
-                        </tr>
-                        {% endfor %}
-                        {% else %}
-                        <tr>
-                            <td colspan="{% if role == 'admin' %}4{% else %}3{% endif %}"
-                                style="text-align: center; color: var(--text-secondary);">No collections
-                                found.</td>
-                        </tr>
-                        {% endif %}
-                    </tbody>
-                </table>
+
+            <!-- Content Grid -->
+            <div class="content-grid">
+                {% if role == 'agent' %}
+                <!-- Add Collection Form - Only for Agents -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3>New Entry (புதிய பதிவு)</h3>
+                    </div>
+                    <form action="{{ url_for('add_collection') }}" method="POST">
+                        <div class="form-group">
+                            <label for="date">Date (தேதி)</label>
+                            <input type="date" id="date" name="date" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="amount">Amount (தொகை ₹)</label>
+                            <input type="number" step="0.01" id="amount" name="amount" required placeholder="0.00">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="purpose">Purpose / Source (விபரம்)</label>
+                            <input type="text" id="purpose" name="purpose" required placeholder="e.g. Daily Sales">
+                        </div>
+
+                        <button type="submit" class="btn-primary">
+                            <i class="fa-solid fa-plus"></i> Add Collection
+                        </button>
+                    </form>
+                </div>
+                {% endif %}
+
+                <!-- Recent Collections List -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Recent History (சமீபத்திய வரலாறு)</h3>
+                    </div>
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    {% if role == 'admin' %}<th>Agent</th>{% endif %}
+                                    <th>Purpose (விபரம்)</th>
+                                    <th>Amount (தொகை)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% if collections %}
+                                {% for item in collections %}
+                                <tr>
+                                    <td>{{ item['collection_date'] }}</td>
+                                    {% if role == 'admin' %}
+                                    <td><i class="fa-solid fa-user-tag"></i> {{ item['user_name'] }}</td>
+                                    {% endif %}
+                                    <td>{{ item['purpose'] }}</td>
+                                    <td class="amount">+ ₹{{ "{:,.2f}".format(item['amount']) }}</td>
+                                </tr>
+                                {% endfor %}
+                                {% else %}
+                                <tr>
+                                    <td colspan="{% if role == 'admin' %}4{% else %}3{% endif %}"
+                                        style="text-align: center; color: var(--text-light);">No collections
+                                        found.</td>
+                                </tr>
+                                {% endif %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

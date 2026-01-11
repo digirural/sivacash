@@ -161,6 +161,31 @@ def delete_user(user_id):
     flash('User deleted successfully.', 'success')
     return redirect(url_for('manage_users'))
 
+@app.route('/view/<page>')
+def view_page(page):
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
+        
+    titles = {
+        'collection': 'Collection (வசூல்)',
+        'monthly': 'Monthly Interest (மாதம் வட்டி)',
+        'customers': 'Customers (வாடிக்கையாளர்)',
+        'expense': 'Expenses (பற்று)',
+        'investment': 'Investment (முதலீடு)',
+        'reports': 'Reports (விபரம்)',
+        'cashout': 'Cashout (பணம் எடுப்பு)',
+        'reminders': 'Reminders (நினைவூட்டல்)',
+        'notes': 'Notes (நோட்ஸ்)',
+        'settings': 'Settings (அமைவு)',
+        'company': 'Company (கம்பெனி)',
+        'invoice': 'Invoice (இன்வாய்ஸ்)',
+        'calculator': 'Calculator (கணக்கீடு)',
+        'help': 'Help (உதவி)'
+    }
+    
+    page_title = titles.get(page, page.capitalize())
+    return render_template('generic_view.html', name=session['name'], role=session['role'], page_title=page_title, page_slug=page)
+
 @app.route('/add_collection', methods=['POST'])
 def add_collection():
     if 'user_id' not in session:

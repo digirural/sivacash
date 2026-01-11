@@ -1,0 +1,174 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="main-layout">
+    <!-- Reusing Sidebar Structure -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <i class="fa-solid fa-hand-holding-dollar"></i> SIVACASH
+        </div>
+
+        <div class="user-profile-mini">
+            <div class="user-avatar">
+                {{ name[0]|upper }}
+            </div>
+            <div class="user-details">
+                <span class="u-name">{{ name }}</span>
+                <span class="u-role badge {{ role }}">{{ role|upper }}</span>
+            </div>
+        </div>
+
+        <nav class="side-menu">
+            <a href="{{ url_for('dashboard') }}" class="menu-item">
+                <i class="fa-solid fa-house"></i>
+                <span>முகப்பு (Dashboard)</span>
+            </a>
+
+            <a href="{{ url_for('view_page', page='collection') }}"
+                class="menu-item {% if page_slug=='collection' %}active{% endif %}">
+                <i class="fa-solid fa-indian-rupee-sign"></i>
+                <span>வசூல் (Collection)</span>
+            </a>
+
+            <a href="{{ url_for('view_page', page='monthly') }}"
+                class="menu-item {% if page_slug=='monthly' %}active{% endif %}">
+                <i class="fa-solid fa-calendar-days"></i>
+                <span>மாதம்(வட்டி) (Monthly)</span>
+            </a>
+
+            <a href="{{ url_for('view_page', page='customers') }}"
+                class="menu-item {% if page_slug=='customers' %}active{% endif %}">
+                <i class="fa-solid fa-users"></i>
+                <span>வாடிக்கையாளர் (Customers)</span>
+            </a>
+
+            <a href="{{ url_for('view_page', page='expense') }}"
+                class="menu-item {% if page_slug=='expense' %}active{% endif %}">
+                <i class="fa-solid fa-money-bill-transfer"></i>
+                <span>பற்று (Debit/Expense)</span>
+            </a>
+
+            <a href="{{ url_for('view_page', page='investment') }}"
+                class="menu-item {% if page_slug=='investment' %}active{% endif %}">
+                <i class="fa-solid fa-piggy-bank"></i>
+                <span>முதலீடு (Investment)</span>
+            </a>
+
+            <div class="menu-group" onclick="this.classList.toggle('open')">
+                <div class="menu-item has-submenu">
+                    <div style="display:flex; align-items:center; gap:12px;">
+                        <i class="fa-solid fa-chart-pie"></i>
+                        <span>விபரம் (Reports)</span>
+                    </div>
+                    <i class="fa-solid fa-chevron-down arrow"></i>
+                </div>
+                <div class="submenu">
+                    <a href="{{ url_for('view_page', page='reports') }}">தினசரி (Daily)</a>
+                    <a href="{{ url_for('view_page', page='reports') }}">வாரம் (Weekly)</a>
+                </div>
+            </div>
+
+            <a href="{{ url_for('view_page', page='cashout') }}"
+                class="menu-item {% if page_slug=='cashout' %}active{% endif %}">
+                <i class="fa-solid fa-money-bill-1-wave"></i>
+                <span>பணம் எடுப்பு (Cashout)</span>
+            </a>
+
+            <a href="{{ url_for('view_page', page='reminders') }}"
+                class="menu-item {% if page_slug=='reminders' %}active{% endif %}">
+                <i class="fa-regular fa-bell"></i>
+                <span>நினைவூட்டல் (Reminders)</span>
+            </a>
+
+            <a href="{{ url_for('view_page', page='notes') }}"
+                class="menu-item {% if page_slug=='notes' %}active{% endif %}">
+                <i class="fa-regular fa-note-sticky"></i>
+                <span>நோட்ஸ் (Notes)</span>
+            </a>
+
+            <a href="{{ url_for('view_page', page='invoice') }}"
+                class="menu-item {% if page_slug=='invoice' %}active{% endif %}">
+                <i class="fa-solid fa-file-invoice"></i>
+                <span>இன்வாய்ஸ் (Invoice)</span>
+            </a>
+
+            <a href="{{ url_for('view_page', page='calculator') }}"
+                class="menu-item {% if page_slug=='calculator' %}active{% endif %}">
+                <i class="fa-solid fa-calculator"></i>
+                <span>கணக்கீடு (Calculator)</span>
+            </a>
+
+            <div class="menu-group" onclick="this.classList.toggle('open')">
+                <div class="menu-item has-submenu">
+                    <div style="display:flex; align-items:center; gap:12px;">
+                        <i class="fa-solid fa-gear"></i>
+                        <span>அமைவு (Settings)</span>
+                    </div>
+                    <i class="fa-solid fa-chevron-down arrow"></i>
+                </div>
+                <div class="submenu">
+                    <a href="{{ url_for('view_page', page='settings') }}">Settings Main</a>
+                </div>
+            </div>
+
+            <div class="menu-group" onclick="this.classList.toggle('open')">
+                <div class="menu-item has-submenu">
+                    <div style="display:flex; align-items:center; gap:12px;">
+                        <i class="fa-solid fa-building"></i>
+                        <span>கம்பெனி (Company)</span>
+                    </div>
+                    <i class="fa-solid fa-chevron-down arrow"></i>
+                </div>
+                <div class="submenu">
+                    <a href="{{ url_for('view_page', page='company') }}">Company Main</a>
+                </div>
+            </div>
+
+            <a href="{{ url_for('view_page', page='help') }}"
+                class="menu-item {% if page_slug=='help' %}active{% endif %}">
+                <i class="fa-solid fa-circle-question"></i>
+                <span>உதவி (Help)</span>
+            </a>
+
+            {% if role == 'admin' %}
+            <a href="{{ url_for('manage_users') }}" class="menu-item">
+                <i class="fa-solid fa-user-gear"></i>
+                <span>நிர்வாகம் (Admin)</span>
+            </a>
+            {% endif %}
+
+            <a href="{{ url_for('logout') }}" class="menu-item logout">
+                <i class="fa-solid fa-power-off"></i>
+                <span>வெளியேறு (Logout)</span>
+            </a>
+        </nav>
+    </div>
+
+    <div class="main-content">
+        <header class="top-header">
+            <div class="header-left">
+                <h3>{{ page_title }}</h3>
+            </div>
+            <div class="header-right">
+                <button class="icon-btn"><i class="fa-solid fa-bell"></i></button>
+            </div>
+        </header>
+
+        <div class="content-wrapper">
+            <div class="card">
+                <div class="card-header" style="display:flex; justify-content:space-between; align-items:center;">
+                    <h3>Manage {{ page_title }}</h3>
+                    <button class="btn-primary" style="width: auto; margin:0;">
+                        <i class="fa-solid fa-plus"></i> Add New
+                    </button>
+                </div>
+                <div style="padding: 40px; text-align: center; color: var(--text-light);">
+                    <i class="fa-solid fa-folder-open" style="font-size: 3rem; margin-bottom: 20px; opacity: 0.5;"></i>
+                    <p>No records found for {{ page_title }}.</p>
+                    <p style="font-size: 0.9rem;">Start by adding a new entry.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
