@@ -25,13 +25,11 @@ google = oauth.register(
     name='google',
     client_id=app.config['GOOGLE_CLIENT_ID'],
     client_secret=app.config['GOOGLE_CLIENT_SECRET'],
-    access_token_url='https://accounts.google.com/o/oauth2/token',
-    access_token_params=None,
+    access_token_url='https://oauth2.googleapis.com/token',
     authorize_url='https://accounts.google.com/o/oauth2/auth',
-    authorize_params=None,
     api_base_url='https://www.googleapis.com/oauth2/v1/',
     client_kwargs={'scope': 'openid email profile'},
-    server_metadata_url='https://accounts.google.com/.well-known/openid-configuration'
+    jwks_uri='https://www.googleapis.com/oauth2/v3/certs'
 )
 
 # Initialize DB
@@ -87,7 +85,9 @@ def google_login():
 def google_auth():
     try:
         token = google.authorize_access_token()
-        user_info = google.get('userinfo').json()
+        # Manually fetch userinfo using the token to avoid dependency on metadata
+        resp = google.get('https://www.googleapis.com/oauth2/v1/userinfo')
+        user_info = resp.json()
         
         google_id = user_info['id']
         email = user_info['email']
