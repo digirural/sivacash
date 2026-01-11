@@ -13,7 +13,7 @@ app.wsgi_app = ProxyFix(app.wsgi_app, x_proto=1, x_host=1)
 app.secret_key = 'your_secret_key_here_change_this_in_prod'
 
 # Enable insecure transport for local development (HTTP)
-os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
+# os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'  <-- Commented out for Production
 
 # Google OAuth Configuration
 # Using credentials found in context/logs
