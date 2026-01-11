@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="dashboard-container">
+    <div class="nav-bar">
+        <div class="logo">
+            <i class="fa-solid fa-wallet"></i> Sivacash
+        </div>
+        <div class="user-menu">
+            <a href="{{ url_for('dashboard') }}" class="btn-secondary"
+                style="margin-right: 15px; color: white; text-decoration: none;">
+                <i class="fa-solid fa-arrow-left"></i> Dashboard
+            </a>
+            <span class="user-name">
+                <i class="fa-solid fa-user-shield"></i> Admin Panel
+            </span>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <h3>Registered Agents</h3>
+        </div>
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Username / Email</th>
+                        <th>Role</th>
+                        <th>Joined Date</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in users %}
+                    <tr>
+                        <td>{{ user['name'] }}</td>
+                        <td>{{ user['username'] }}</td>
+                        <td>
+                            <span class="badge {{ user['role'] }}">{{ user['role']|upper }}</span>
+                        </td>
+                        <td>{{ user['created_at']|default('N/A') }}</td>
+                        <td>
+                            {% if user['role'] != 'admin' %}
+                            <a href="{{ url_for('delete_user', user_id=user['id']) }}" class="btn-logout"
+                                onclick="return confirm('Are you sure? This will delete all collections by this user.')">
+                                <i class="fa-solid fa-trash"></i> Delete
+                            </a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

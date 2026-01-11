@@ -21,7 +21,8 @@ def init_db():
             username TEXT UNIQUE NOT NULL,
             password TEXT,
             role TEXT DEFAULT 'agent',
-            google_id TEXT UNIQUE
+            google_id TEXT UNIQUE,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )
     ''')
     
@@ -94,6 +95,22 @@ def get_user_by_google_id(google_id):
     user = c.fetchone()
     conn.close()
     return user
+
+def get_all_users():
+    conn = get_db_connection()
+    c = conn.cursor()
+    c.execute('SELECT * FROM users ORDER BY created_at DESC')
+    users = c.fetchall()
+    conn.close()
+    return users
+
+def delete_user(user_id):
+    conn = get_db_connection()
+    c = conn.cursor()
+    c.execute('DELETE FROM users WHERE id = ?', (user_id,))
+    c.execute('DELETE FROM collections WHERE user_id = ?', (user_id,))
+    conn.commit()
+    conn.close()
 
 def reset_password(username, mobile, new_password):
     conn = get_db_connection()

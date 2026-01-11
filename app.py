@@ -144,6 +144,23 @@ def dashboard():
                            total_amount=total_amount,
                            role=role)
 
+@app.route('/manage_users')
+def manage_users():
+    if 'user_id' not in session or session.get('role') != 'admin':
+        return redirect(url_for('dashboard'))
+    
+    users = database.get_all_users()
+    return render_template('manage_users.html', users=users, name=session['name'], role='admin')
+
+@app.route('/delete_user/<int:user_id>')
+def delete_user(user_id):
+    if 'user_id' not in session or session.get('role') != 'admin':
+        return redirect(url_for('login'))
+        
+    database.delete_user(user_id)
+    flash('User deleted successfully.', 'success')
+    return redirect(url_for('manage_users'))
+
 @app.route('/add_collection', methods=['POST'])
 def add_collection():
     if 'user_id' not in session:

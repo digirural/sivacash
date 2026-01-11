@@ -11,6 +11,12 @@
                 <i class="fa-solid fa-user-circle"></i> {{ name }}
                 <span class="badge {{ role }}">{{ role|upper }}</span>
             </span>
+            {% if role == 'admin' %}
+            <a href="{{ url_for('manage_users') }}" class="btn-logout"
+                style="margin-right: 10px; background: rgba(99, 102, 241, 0.2); color: var(--accent-primary); border-color: var(--accent-primary);">
+                <i class="fa-solid fa-users-gear"></i> Manage Users
+            </a>
+            {% endif %}
             <a href="{{ url_for('logout') }}" class="btn-logout">
                 <i class="fa-solid fa-right-from-bracket"></i> Logout
             </a>
