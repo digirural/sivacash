@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="auth-container">
+    <div class="auth-left">
+        <div class="brand-content">
+            <i class="fa-solid fa-hand-holding-dollar"></i>
+            <h1>SIVACASH</h1>
+            <p>Join the future of cash collection management</p>
+        </div>
+    </div>
+    <div class="auth-right">
+        <div class="login-box">
+            <div class="auth-header">
+                <h2>Create Account</h2>
+                <p>Register as a new Agent</p>
+            </div>
+
+            <form action="{{ url_for('register') }}" method="POST">
+                <div class="form-group">
+                    <label for="name">Full Name</label>
+                    <div class="input-with-icon">
+                        <i class="fa-solid fa-user-tag"></i>
+                        <input type="text" id="name" name="name" required placeholder="Enter your full name">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="mobile">Mobile Number</label>
+                    <div class="input-with-icon">
+                        <i class="fa-solid fa-phone"></i>
+                        <input type="text" id="mobile" name="mobile" required placeholder="10-digit number">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="username">Choose Username</label>
+                    <div class="input-with-icon">
+                        <i class="fa-solid fa-at"></i>
+                        <input type="text" id="username" name="username" required placeholder="e.g. siva_agent">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <div class="input-with-icon">
+                        <i class="fa-solid fa-lock"></i>
+                        <input type="password" id="password" name="password" required placeholder="••••••••">
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-primary">Register Now</button>
+            </form>
+
+            <div class="auth-footer">
+                Already have an account? <a href="{{ url_for('login') }}">Sign in here</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

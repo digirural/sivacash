@@ -39,6 +39,37 @@ def init_db():
         )
     ''')
     
+    # Create Customers Table
+    c.execute('''
+        CREATE TABLE IF NOT EXISTS customers (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT NOT NULL,
+            customer_id_str TEXT,
+            mobile TEXT,
+            alt_mobile TEXT,
+            line TEXT,
+            city TEXT,
+            business TEXT,
+            address TEXT,
+            status TEXT DEFAULT 'Active',
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
+    ''')
+
+    # Create Expenses Table
+    c.execute('''
+        CREATE TABLE IF NOT EXISTS expenses (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            expense_type TEXT NOT NULL,
+            line TEXT,
+            amount REAL NOT NULL,
+            date DATE NOT NULL,
+            is_online BOOLEAN DEFAULT 0,
+            notes TEXT,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
+    ''')
+    
     conn.commit()
     conn.close()
 
@@ -139,6 +170,42 @@ def verify_user(username, password):
     user = c.fetchone()
     conn.close()
     return user
+
+def add_customer(name, mobile, city, line, business, address, customer_id_str):
+    conn = get_db_connection()
+    c = conn.cursor()
+    c.execute('''
+        INSERT INTO customers (name, mobile, city, line, business, address, customer_id_str)
+        VALUES (?, ?, ?, ?, ?, ?, ?)
+    ''', (name, mobile, city, line, business, address, customer_id_str))
+    conn.commit()
+    conn.close()
+
+def get_customers():
+    conn = get_db_connection()
+    c = conn.cursor()
+    c.execute('SELECT * FROM customers ORDER BY created_at DESC')
+    customers = c.fetchall()
+    conn.close()
+    return customers
+
+def add_expense(expense_type, line, amount, date, is_online, notes):
+    conn = get_db_connection()
+    c = conn.cursor()
+    c.execute('''
+        INSERT INTO expenses (expense_type, line, amount, date, is_online, notes)
+        VALUES (?, ?, ?, ?, ?, ?)
+    ''', (expense_type, line, amount, date, is_online, notes))
+    conn.commit()
+    conn.close()
+
+def get_expenses():
+    conn = get_db_connection()
+    c = conn.cursor()
+    c.execute('SELECT * FROM expenses ORDER BY date DESC')
+    expenses = c.fetchall()
+    conn.close()
+    return expenses
 
 def add_collection(user_id, amount, purpose, date):
     conn = get_db_connection()
