@@ -7,11 +7,14 @@
 }
 
 :root {
-    --primary-blue: #0099ff;
-    --dark-blue: #007acc;
+    --primary-blue: #db2777;
+    /* Deep Pink (Tailwind pink-600) */
+    --dark-blue: #be185d;
+    /* Darker Pink (Tailwind pink-700) */
     --text-dark: #333;
     --text-light: #64748b;
-    --bg-light: #f1f5f9;
+    --bg-light: #fdf2f8;
+    /* Very light pink (Tailwind pink-50) */
     --white: #ffffff;
     --danger: #ef4444;
     --success: #10b981;
@@ -130,7 +133,7 @@ body {
 .main-layout {
     display: flex;
     min-height: 100vh;
-    background: #f1f5f9;
+    background: var(--bg-light);
 }
 
 .sidebar {
@@ -241,7 +244,8 @@ body {
 
 .menu-item:hover,
 .menu-item.active {
-    background: #f0f9ff;
+    background: #fce7f3;
+    /* Light pink background (pink-100) */
     color: var(--primary-blue);
     border-left-color: var(--primary-blue);
 }
@@ -336,7 +340,8 @@ body {
     width: 50px;
     height: 50px;
     border-radius: 50%;
-    background: #e0f2fe;
+    background: #fdf2f8;
+    /* pink-50 */
     color: var(--primary-blue);
     display: flex;
     align-items: center;
