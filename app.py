@@ -13,7 +13,7 @@ app.wsgi_app = ProxyFix(app.wsgi_app, x_proto=1, x_host=1)
 app.secret_key = 'your_secret_key_here_change_this_in_prod'
 
 # Enable insecure transport for local development (HTTP)
-# os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'  <-- Commented out for Production
+os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
 
 # Google OAuth Configuration
 # Using credentials found in context/logs
@@ -131,12 +131,8 @@ def dashboard():
     
     role = session.get('role', 'agent')
     
-    if role == 'admin':
-        collections = database.get_all_collections()
-        total_amount = database.get_total_amount_all()
-    else:
-        collections = database.get_user_collections(session['user_id'])
-        total_amount = database.get_total_amount(session['user_id'])
+    collections = database.get_all_collections()
+    total_amount = database.get_total_amount_all()
         
     return render_template('dashboard.html', 
                            name=session['name'], 
@@ -146,15 +142,15 @@ def dashboard():
 
 @app.route('/manage_users')
 def manage_users():
-    if 'user_id' not in session or session.get('role') != 'admin':
-        return redirect(url_for('dashboard'))
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
     
     users = database.get_all_users()
     return render_template('manage_users.html', users=users, name=session['name'], role='admin')
 
 @app.route('/delete_user/<int:user_id>')
 def delete_user(user_id):
-    if 'user_id' not in session or session.get('role') != 'admin':
+    if 'user_id' not in session:
         return redirect(url_for('login'))
         
     database.delete_user(user_id)

@@ -84,6 +84,16 @@
                 <span>நோட்ஸ் (Notes)</span>
             </a>
 
+            <a href="{{ url_for('view_page', page='invoice') }}" class="menu-item">
+                <i class="fa-solid fa-file-invoice"></i>
+                <span>இன்வாய்ஸ் (Invoice)</span>
+            </a>
+
+            <a href="{{ url_for('view_page', page='calculator') }}" class="menu-item">
+                <i class="fa-solid fa-calculator"></i>
+                <span>கணக்கீடு (Calculator)</span>
+            </a>
+
             <!-- Configuration (அமைவு) -->
             <div class="menu-group" onclick="this.classList.toggle('open')">
                 <div class="menu-item has-submenu">
@@ -111,6 +121,16 @@
                     <a href="{{ url_for('view_page', page='company') }}">Company</a>
                 </div>
             </div>
+
+            <a href="{{ url_for('view_page', page='help') }}" class="menu-item">
+                <i class="fa-solid fa-circle-question"></i>
+                <span>உதவி (Help)</span>
+            </a>
+
+            <a href="{{ url_for('manage_users') }}" class="menu-item">
+                <i class="fa-solid fa-user-gear"></i>
+                <span>நிர்வாகம் (Admin)</span>
+            </a>
 
             <a href="{{ url_for('logout') }}" class="menu-item logout">
                 <i class="fa-solid fa-power-off"></i>
@@ -169,8 +189,7 @@
 
             <!-- Content Grid -->
             <div class="content-grid">
-                {% if role == 'agent' %}
-                <!-- Add Collection Form - Only for Agents -->
+                <!-- Add Collection Form - Visible for All -->
                 <div class="card">
                     <div class="card-header">
                         <h3>New Entry (புதிய பதிவு)</h3>
@@ -196,7 +215,6 @@
                         </button>
                     </form>
                 </div>
-                {% endif %}
 
                 <!-- Recent Collections List -->
                 <div class="card">
@@ -208,7 +226,7 @@
                             <thead>
                                 <tr>
                                     <th>Date</th>
-                                    {% if role == 'admin' %}<th>Agent</th>{% endif %}
+                                    <th>Agent</th>
                                     <th>Purpose (விபரம்)</th>
                                     <th>Amount (தொகை)</th>
                                 </tr>
@@ -218,17 +236,14 @@
                                 {% for item in collections %}
                                 <tr>
                                     <td>{{ item['collection_date'] }}</td>
-                                    {% if role == 'admin' %}
                                     <td><i class="fa-solid fa-user-tag"></i> {{ item['user_name'] }}</td>
-                                    {% endif %}
                                     <td>{{ item['purpose'] }}</td>
                                     <td class="amount">+ ₹{{ "{:,.2f}".format(item['amount']) }}</td>
                                 </tr>
                                 {% endfor %}
                                 {% else %}
                                 <tr>
-                                    <td colspan="{% if role == 'admin' %}4{% else %}3{% endif %}"
-                                        style="text-align: center; color: var(--text-light);">No collections
+                                    <td colspan="4" style="text-align: center; color: var(--text-light);">No collections
                                         found.</td>
                                 </tr>
                                 {% endif %}
